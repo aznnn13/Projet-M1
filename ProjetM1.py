@@ -2,6 +2,9 @@ from flask import Flask
 from flask import render_template
 
 app = Flask(__name__)
+# Powershell = $env:FLASK_APP = "ProjetM1"
+# cmd = set FLASK_APP=ProjetM1
+# flask run
 
 @app.route('/')
 def index():
