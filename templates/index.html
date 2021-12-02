@@ -22,10 +22,10 @@
                         <p>Point 1 : </p>
                     </div>
                     <div class="col-5">
-                        <input name="PointX1" class="form-control" placeholder="X" type="number" step=0.001>
+                        <input name="PointX1" class="form-control" placeholder="X" type="number" step=0.001 required>
                     </div>
                     <div class="col-5">
-                        <input name="PointY1" class="form-control" placeholder="Y" type="number" step=0.001>
+                        <input name="PointY1" class="form-control" placeholder="Y" type="number" step=0.001 required>
                     </div>
                 </div>
             </div>
@@ -62,10 +62,10 @@
                         <p>Point ${id} : </p>
                     </div>
                     <div class="col-5">
-                        <input name="PointX${id}" class="form-control" placeholder="X" type="number" step=0.001>
+                        <input name="PointX${id}" class="form-control" placeholder="X" type="number" step=0.001 required>
                     </div>
                     <div class="col-5">
-                        <input name="PointY${id}" class="form-control" placeholder="Y" type="number" step=0.001>
+                        <input name="PointY${id}" class="form-control" placeholder="Y" type="number" step=0.001 required>
                     </div>
                 </div>`;
         $('#form').append(newInput);
