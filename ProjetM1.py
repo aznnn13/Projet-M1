@@ -1,6 +1,4 @@
-from flask import Flask
-from flask import render_template
-from flask import request
+from flask import Flask,render_template,request,redirect
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
@@ -54,7 +52,7 @@ def result():
 
         ax.axis('tight')
         plt.savefig('images/linear_regression.png')
-        return render_template("result.html",data = data)
+        return render_template("result.html")
 
 
 if __name__ == '__main__':

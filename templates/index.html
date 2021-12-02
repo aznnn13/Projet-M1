@@ -1,21 +1,11 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <link href="{{ url_for('static',filename='css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ url_for('static',filename='css/styles.css') }}" rel="stylesheet" type="text/css">
-    <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}" type="text/javascript"></script>
-
-    <nav class="navbar navbar-expand-lg bg-secondary text-uppercase navbar-static-top" id="mainNav">
-        <div class="container justify-content-center">
-            <a class="navbar-brand" href="#page-top">Projet</a>
-        </div>
-    </nav>
-</head>
+{% include 'header.html' %}
 <body>
 <div class="container">
     <h1 class="text-center">Coordonnées des points</h1>
     <div class="col-md-12">
-        <form method="POST" action="/result/">
+        <form method="POST" action="/result">
             <div class="form-group" id="form">
                 <div class="row justify-content-center" id="Point1">
                     <div class="col-2 my-2">
@@ -46,11 +36,7 @@
 
 </div>
 </body>
-<footer>
-    <div class="copyright py-4 text-center text-white my-5">
-        <div class="container"><small>Copyright &copy; Your Website 2021</small></div>
-    </div>
-</footer>
+{% include 'footer.html' %}
 
 <script>
     var id = 1;
