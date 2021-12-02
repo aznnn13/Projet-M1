@@ -16,8 +16,9 @@
     <h1 class="text-center">Coordonnées des points</h1>
     <div class="col-md-12">
         <form>
-            <div class="form-group justify-content-center">
-                <div class="row">
+            <div class="form-group" id="form">
+                <div class="row justify-content-center" id="Point1">
+                    <input type="hidden">
                     <div class="col-2 my-2">
                         <p>Point 1 : </p>
                     </div>
@@ -29,12 +30,16 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-6">
-                    <button class="btn btn-primary" type="submit">Submit</button>
+            <div class="row text-center">
+                <div class="col">
+                    <button class="btn btn-info" onclick="addPoint()" type="button">Ajouter un nouveau point</button>
                 </div>
-                <div class="col-6">
-                    <button class="btn btn-primary" type="button">Ajouter un nouveau point</button>
+                <div class="col">
+                    <button class="btn btn-danger" onclick="removePoint()" type="button">Supprimer le dernier point
+                    </button>
+                </div>
+                <div class="col">
+                    <button class="btn btn-secondary" type="submit">Submit</button>
                 </div>
             </div>
 
@@ -44,11 +49,35 @@
 </div>
 </body>
 <footer>
-    <div class="copyright py-4 text-center text-white">
+    <div class="copyright py-4 text-center text-white my-5">
         <div class="container"><small>Copyright &copy; Your Website 2021</small></div>
     </div>
 </footer>
 
 <script>
+    var id = 1;
+
+    function addPoint() {
+        id++;
+        var newInput = `<div class="row justify-content-center" id="Point${id}">
+                    <div class="col-2 my-2">
+                        <p>Point ${id} : </p>
+                    </div>
+                    <div class="col-5">
+                        <input class="form-control" placeholder="X" type="number">
+                    </div>
+                    <div class="col-5">
+                        <input class="form-control" placeholder="Y" type="number">
+                    </div>
+                </div>`;
+        $('#form').append(newInput);
+    }
+
+    function removePoint() {
+        if (id > 0) {
+            $('#Point' + id).remove();
+            id--;
+        }
+    }
 </script>
 </html>
