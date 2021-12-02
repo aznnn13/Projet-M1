@@ -15,18 +15,17 @@
 <div class="container">
     <h1 class="text-center">Coordonnées des points</h1>
     <div class="col-md-12">
-        <form>
+        <form method="POST" action="/result/">
             <div class="form-group" id="form">
                 <div class="row justify-content-center" id="Point1">
-                    <input type="hidden">
                     <div class="col-2 my-2">
                         <p>Point 1 : </p>
                     </div>
                     <div class="col-5">
-                        <input class="form-control" placeholder="X" type="number">
+                        <input name="PointX1" class="form-control" placeholder="X" type="number" step=0.001>
                     </div>
                     <div class="col-5">
-                        <input class="form-control" placeholder="Y" type="number">
+                        <input name="PointY1" class="form-control" placeholder="Y" type="number" step=0.001>
                     </div>
                 </div>
             </div>
@@ -42,7 +41,6 @@
                     <button class="btn btn-secondary" type="submit">Submit</button>
                 </div>
             </div>
-
         </form>
     </div>
 
@@ -64,10 +62,10 @@
                         <p>Point ${id} : </p>
                     </div>
                     <div class="col-5">
-                        <input class="form-control" placeholder="X" type="number">
+                        <input name="PointX${id}" class="form-control" placeholder="X" type="number" step=0.001>
                     </div>
                     <div class="col-5">
-                        <input class="form-control" placeholder="Y" type="number">
+                        <input name="PointY${id}" class="form-control" placeholder="Y" type="number" step=0.001>
                     </div>
                 </div>`;
         $('#form').append(newInput);

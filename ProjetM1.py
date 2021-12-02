@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import render_template
+from flask import request
 
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
@@ -10,6 +11,12 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 @app.route('/')
 def index():
     return render_template("index.html")
+
+@app.route('/result/', methods=['GET', 'POST'])
+def result():
+    if request.method == 'POST':
+        data = request.form
+        return render_template("result.html",data = data)
 
 
 if __name__ == '__main__':
