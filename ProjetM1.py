@@ -42,7 +42,7 @@ def result():
         y_new = model.predict(x_new[:, np.newaxis])
 
         # plot the results
-        plt.figure(figsize=(4, 3))
+        plt.figure(figsize=(8, 6))
         ax = plt.axes()
         ax.scatter(x, y)
         ax.plot(x_new, y_new)
