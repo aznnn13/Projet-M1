@@ -51,7 +51,7 @@ def result():
         ax.set_ylabel('y')
 
         ax.axis('tight')
-        plt.savefig('images/linear_regression.png')
+        plt.savefig('static/images/linear_regression.png')
         return render_template("result.html")
 
 
