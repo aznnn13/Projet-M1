@@ -9,29 +9,29 @@
             <form action="/result" method="POST">
                 <div class="form-group" id="form">
                     <div class="row justify-content-center" id="Point1">
-                        <div class="col-2 my-2">
+                        <div class="col-md-2 my-2">
                             <p>Point 1 : </p>
                         </div>
-                        <div class="col-5">
+                        <div class="col-md-5">
                             <input class="form-control" name="PointX1" placeholder="X" required step=0.001
                                    type="number">
                         </div>
-                        <div class="col-5">
+                        <div class="col-md-5">
                             <input class="form-control" name="PointY1" placeholder="Y" required step=0.001
                                    type="number">
                         </div>
                     </div>
                 </div>
                 <div class="row text-center">
-                    <div class="col">
+                    <div class="col-md-4">
                         <button class="btn btn-info" onclick="addPoint()" type="button">Ajouter un nouveau point
                         </button>
                     </div>
-                    <div class="col">
+                    <div class="col-md-4">
                         <button class="btn btn-danger" onclick="removePoint()" type="button">Supprimer le dernier point
                         </button>
                     </div>
-                    <div class="col">
+                    <div class="col-md-4">
                         <button class="btn btn-secondary" type="submit">Submit</button>
                     </div>
                 </div>
@@ -50,13 +50,13 @@
     function addPoint() {
         id++;
         var newInput = `<div class="row justify-content-center" id="Point${id}">
-                    <div class="col-2 my-2">
+                    <div class="col-md-2 my-2">
                         <p>Point ${id} : </p>
                     </div>
-                    <div class="col-5">
+                    <div class="col-md-5">
                         <input name="PointX${id}" class="form-control" placeholder="X" type="number" step=0.001 required>
                     </div>
-                    <div class="col-5">
+                    <div class="col-md-5">
                         <input name="PointY${id}" class="form-control" placeholder="Y" type="number" step=0.001 required>
                     </div>
                 </div>`;
