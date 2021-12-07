@@ -2,40 +2,48 @@
 <html lang="fr">
 {% include 'header.html' %}
 <body>
-<div class="container">
-    <h1 class="text-center">Coordonnées des points</h1>
+<div class="container my-5">
     <div class="row">
         <div class="col-md-12">
-            <form action="/result" method="POST">
-                <div class="form-group" id="form">
-                    <div class="row justify-content-center" id="Point1">
-                        <div class="col-md-2 my-2">
-                            <p>Point 1 : </p>
-                        </div>
-                        <div class="col-md-5">
-                            <input class="form-control" name="PointX1" placeholder="X" required step=0.001
-                                   type="number">
-                        </div>
-                        <div class="col-md-5">
-                            <input class="form-control" name="PointY1" placeholder="Y" required step=0.001
-                                   type="number">
-                        </div>
-                    </div>
+            <div class="card text-center">
+                <div class="card-header">
+                    <h3 class="text-center">Coordonnées des points</h3>
                 </div>
-                <div class="row text-center">
-                    <div class="col-md-4">
-                        <button class="btn btn-info" onclick="addPoint()" type="button">Ajouter un nouveau point
-                        </button>
-                    </div>
-                    <div class="col-md-4">
-                        <button class="btn btn-danger" onclick="removePoint()" type="button">Supprimer le dernier point
-                        </button>
-                    </div>
-                    <div class="col-md-4">
-                        <button class="btn btn-secondary" type="submit">Submit</button>
-                    </div>
+                <div class="card-body">
+                    <form action="/result" method="POST">
+                        <div class="form-group" id="form">
+                            <div class="row justify-content-center" id="Point1">
+                                <div class="col-md-2 my-2">
+                                    <p>Point 1 : </p>
+                                </div>
+                                <div class="col-md-5">
+                                    <input class="form-control" name="PointX1" placeholder="X" required step=0.001
+                                           type="number">
+                                </div>
+                                <div class="col-md-5">
+                                    <input class="form-control" name="PointY1" placeholder="Y" required step=0.001
+                                           type="number">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-center">
+                            <div class="col-md-4">
+                                <button class="btn btn-info" onclick="addPoint()" type="button">Ajouter un nouveau point
+                                </button>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-danger" onclick="removePoint()" type="button">Supprimer le dernier point
+                                </button>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-secondary" type="submit">Submit</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </form>
+                <div class="card-footer text-muted">
+                </div>
+            </div>
         </div>
     </div>
 
