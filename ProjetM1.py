@@ -20,12 +20,16 @@ def result():
         data = request.form
 
         #Construction des listes X et Y
+        maximumX = 0
         i = 0
         x = []
         y = []
         for key,value in data.items():
             if i % 2 == 0:
                 x.append([value])
+                value = int(value)
+                if value > maximumX:
+                    maximumX = value
             else:
                 y.append([value])
             i+= 1
@@ -38,7 +42,7 @@ def result():
         model.fit(x, y)
 
         # predict y from the data
-        x_new = np.linspace(0, 30, 100)
+        x_new = np.linspace(0, maximumX, 100)
         y_new = model.predict(x_new[:, np.newaxis])
 
         # plot the results
