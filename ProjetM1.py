@@ -12,7 +12,12 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config['UPLOAD_EXTENSIONS'] = ['.csv']
+ALLOWED_EXTENSIONS = {'csv'}
 app.config['UPLOAD_FOLDER'] = 'static/csv'
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/')
 def index():
@@ -20,7 +25,6 @@ def index():
 
 @app.route('/result/', methods=['GET', 'POST'])
 def result():
-
     #Suppression des anciens résultats
     if os.path.exists("static/csv/csvPoints.csv"):
         os.remove("static/csv/csvPoints.csv")
@@ -29,12 +33,14 @@ def result():
 
     if request.method == 'POST':
 
-        #Sauvegarde du csv avec un nom static
+        #Sauvegarde du csv avec un nom statique + vérification de l'extension
         f = request.files['csvPoints']
-        f.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename('csvPoints.csv'))) #secure_filename(f.filename)
+        if f and allowed_file(f.filename):
+            f.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename('csvPoints.csv'))) #secure_filename(f.filename)
+
+
 
         data = request.form
-
         #Construction des listes X et Y
         maximumX = 0
         i = 0
