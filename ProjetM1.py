@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import os
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from sklearn.linear_model import LinearRegression
 from werkzeug.utils import secure_filename
 
@@ -14,6 +14,7 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config['UPLOAD_EXTENSIONS'] = ['.csv']
 ALLOWED_EXTENSIONS = {'csv'}
 app.config['UPLOAD_FOLDER'] = 'static/csv'
+app.secret_key = 'super secret key'
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -37,8 +38,9 @@ def result():
         f = request.files['csvPoints']
         if f and allowed_file(f.filename):
             f.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename('csvPoints.csv'))) #secure_filename(f.filename)
-
-
+        else:
+            flash('Erreur: Choisir un fichier .csv', 'danger')
+            return redirect(url_for('index'))
 
         data = request.form
         #Construction des listes X et Y
