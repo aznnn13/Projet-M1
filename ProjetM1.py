@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+import pandas as pd
 from flask import Flask, render_template, request, redirect, url_for, flash
 from sklearn.linear_model import LinearRegression
 from werkzeug.utils import secure_filename
@@ -33,31 +34,45 @@ def result():
         os.remove("static/images/linear_regression.png")
 
     if request.method == 'POST':
-
-        #Sauvegarde du csv avec un nom statique + vérification de l'extension
-        f = request.files['csvPoints']
-        if f and allowed_file(f.filename):
-            f.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename('csvPoints.csv'))) #secure_filename(f.filename)
-        else:
-            flash('Erreur: Choisir un fichier .csv', 'danger')
-            return redirect(url_for('index'))
-
-        data = request.form
-        #Construction des listes X et Y
-        maximumX = 0
-        i = 0
         x = []
         y = []
-        for key,value in data.items():
-            if i % 2 == 0:
-                x.append([value])
-                value = float(value)
-                if value > maximumX:
-                    maximumX = value
+        maximumX = 0
+        # check if the post request has the file part
+        if not request.files :
+            data = request.form
+            i = 0
+            for key,value in data.items():
+                if i % 2 == 0:
+                    x.append([value])
+                    value = float(value)
+                    if value > maximumX:
+                        maximumX = value
+                else:
+                    y.append([value])
+                i+= 1
+        else:
+            #Sauvegarde du csv avec un nom statique + vérification de l'extension
+            f = request.files['csvPoints']
+            if f and allowed_file(f.filename):
+                f.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename('csvPoints.csv'))) #secure_filename(f.filename)
             else:
-                y.append([value])
-            i+= 1
+                flash('Erreur: Choisir un fichier .csv', 'danger')
+                return redirect(url_for('index'))
 
+            # Read the csv file
+            df = pd.read_csv("static/csv/csvPoints.csv", sep=',')[['X','Y']]
+            for (colname,colval) in df.iteritems():
+                if colname == 'X':
+                    for value in colval.values:
+                        x.append([value])
+                        if value > maximumX:
+                            maximumX = value
+
+                if colname == 'Y':
+                    for value in colval.values:
+                        y.append([value])
+
+        #Construction des listes X et Y
         x = np.array(x,dtype=float)
         y = np.array(y,dtype=float)
 
