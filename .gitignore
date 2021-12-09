@@ -538,4 +538,6 @@ cython_debug/
 
 # ProjetM1 Results
 static/csv/*
+!static/csv/.gitkeep 
 static/images/*
+!static/images/.gitkeep 
