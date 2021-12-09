@@ -10,7 +10,7 @@
                     <h3 class="text-center">Coordonnées des points</h3>
                 </div>
                 <div class="card-body">
-                    <form action="/result" method="POST">
+                    <form action="{{ url_for('result') }}" enctype="multipart/form-data" method="POST">
                         <div class="form-group" id="form">
                             <div class="row justify-content-center" id="Point1">
                                 <div class="col-md-2 my-2">
@@ -26,13 +26,23 @@
                                 </div>
                             </div>
                         </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <input accept="text/csv" name="csvPoints" class="form-control" id="customFile" type="file" required/>
+                            </div>
+                            <div class="col-md-4"></div>
+
+                        </div>
                         <div class="row text-center">
                             <div class="col-md-4">
                                 <button class="btn btn-info" onclick="addPoint()" type="button">Ajouter un nouveau point
                                 </button>
                             </div>
                             <div class="col-md-4">
-                                <button class="btn btn-danger" onclick="removePoint()" type="button">Supprimer le dernier point
+                                <button class="btn btn-danger" onclick="removePoint()" type="button">Supprimer le
+                                    dernier point
                                 </button>
                             </div>
                             <div class="col-md-4">

@@ -1,14 +1,18 @@
-from flask import Flask,render_template,request,redirect
 import numpy as np
 import matplotlib.pyplot as plt
+import os
+from flask import Flask, render_template, request, redirect, url_for
 from sklearn.linear_model import LinearRegression
+from werkzeug.utils import secure_filename
 
+# cmd = set FLASK_APP=ProjetM1
+# set FLASK_ENV=development
+# flask run
 
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
-# Powershell = $env:FLASK_APP = "ProjetM1"
-# cmd = set FLASK_APP=ProjetM1
-# flask run
+app.config['UPLOAD_EXTENSIONS'] = ['.csv']
+app.config['UPLOAD_FOLDER'] = 'static/csv'
 
 @app.route('/')
 def index():
@@ -16,7 +20,19 @@ def index():
 
 @app.route('/result/', methods=['GET', 'POST'])
 def result():
+
+    #Suppression des anciens résultats
+    if os.path.exists("static/csv/csvPoints.csv"):
+        os.remove("static/csv/csvPoints.csv")
+    if os.path.exists("static/images/linear_regression.png"):
+        os.remove("static/images/linear_regression.png")
+
     if request.method == 'POST':
+
+        #Sauvegarde du csv avec un nom static
+        f = request.files['csvPoints']
+        f.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename('csvPoints.csv'))) #secure_filename(f.filename)
+
         data = request.form
 
         #Construction des listes X et Y
@@ -27,7 +43,7 @@ def result():
         for key,value in data.items():
             if i % 2 == 0:
                 x.append([value])
-                value = int(value)
+                value = float(value)
                 if value > maximumX:
                     maximumX = value
             else:

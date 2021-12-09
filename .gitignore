@@ -535,3 +535,7 @@ cython_debug/
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio
+
+# ProjetM1 Results
+static/csv/*
+static/images/*
