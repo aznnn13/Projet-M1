@@ -50,7 +50,6 @@ def result():
 
             if Option == 1: # Import .csv
 
-                print("Je suis dans l'import csv")
                 #Sauvegarde du csv avec un nom statique + vérification de l'extension
                 f = request.files['csvPoints']
                 if f and allowed_file(f.filename):
@@ -74,7 +73,6 @@ def result():
 
             if Option == 2: # Ajout des points à la main
 
-                print("Je suis dans l'ajout des points à la main")
                 # check if the post request has the file part
                 i = 0
                 for key,value in data.items():
@@ -112,8 +110,7 @@ def result():
             plt.savefig('static/images/linear_regression.png')
 
         else: #Nouveau formulaire
-            print("Je suis dans le nouveau formulaire")
-
+            a="fmax à faire"
         return render_template("result.html", Option=Option)
 
 
