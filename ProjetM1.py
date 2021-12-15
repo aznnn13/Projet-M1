@@ -27,75 +27,94 @@ def index():
 
 @app.route('/result/', methods=['GET', 'POST'])
 def result():
-    #Suppression des anciens résultats
-    if os.path.exists("static/csv/csvPoints.csv"):
-        os.remove("static/csv/csvPoints.csv")
-    if os.path.exists("static/images/linear_regression.png"):
-        os.remove("static/images/linear_regression.png")
-
     if request.method == 'POST':
-        x = []
-        y = []
-        maximumX = 0
-        # check if the post request has the file part
-        if not request.files :
-            data = request.form
-            i = 0
-            for key,value in data.items():
-                if i % 2 == 0:
-                    x.append([value])
-                    value = float(value)
-                    if value > maximumX:
-                        maximumX = value
-                else:
-                    y.append([value])
-                i+= 1
-        else:
-            #Sauvegarde du csv avec un nom statique + vérification de l'extension
-            f = request.files['csvPoints']
-            if f and allowed_file(f.filename):
-                f.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename('csvPoints.csv'))) #secure_filename(f.filename)
-            else:
-                flash('Erreur: Choisir un fichier .csv', 'danger')
-                return redirect(url_for('index'))
+        #Convertion de 'ImmutableMultiDict' en 'dict'
+        data = request.form.to_dict()
 
-            # Read the csv file
-            df = pd.read_csv("static/csv/csvPoints.csv", sep=',')[['X','Y']]
-            for (colname,colval) in df.iteritems():
-                if colname == 'X':
-                    for value in colval.values:
+        #On récupère l'option choisie et on l'enlève au dict
+        Option = int(data.pop('Option', None))
+
+
+        if Option <= 2:
+
+            #Suppression des anciens résultats
+            if os.path.exists("static/csv/csvPoints.csv"):
+                os.remove("static/csv/csvPoints.csv")
+            if os.path.exists("static/images/linear_regression.png"):
+                os.remove("static/images/linear_regression.png")
+
+            #Déclaration des tableaux X et Y pour la régression linéaire
+            x = []
+            y = []
+            maximumX = 0
+
+            if Option == 1: # Import .csv
+
+                print("Je suis dans l'import csv")
+                #Sauvegarde du csv avec un nom statique + vérification de l'extension
+                f = request.files['csvPoints']
+                if f and allowed_file(f.filename):
+                    f.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename('csvPoints.csv'))) #secure_filename(f.filename)
+                else:
+                    flash('Erreur: Choisir un fichier .csv', 'danger')
+                    return redirect(url_for('index'))
+
+                # Read the csv file
+                df = pd.read_csv("static/csv/csvPoints.csv", sep=',')[['X','Y']]
+                for (colname,colval) in df.iteritems():
+                    if colname == 'X':
+                        for value in colval.values:
+                            x.append([value])
+                            if value > maximumX:
+                                maximumX = value
+
+                    if colname == 'Y':
+                        for value in colval.values:
+                            y.append([value])
+
+            if Option == 2: # Ajout des points à la main
+
+                print("Je suis dans l'ajout des points à la main")
+                # check if the post request has the file part
+                i = 0
+                for key,value in data.items():
+                    if i % 2 == 0:
                         x.append([value])
+                        value = float(value)
                         if value > maximumX:
                             maximumX = value
-
-                if colname == 'Y':
-                    for value in colval.values:
+                    else:
                         y.append([value])
+                    i+= 1
 
-        #Construction des listes X et Y
-        x = np.array(x,dtype=float)
-        y = np.array(y,dtype=float)
+            #Construction des listes X et Y
+            x = np.array(x,dtype=float)
+            y = np.array(y,dtype=float)
 
-        # create a linear regression model
-        model = LinearRegression()
-        model.fit(x, y)
+            # create a linear regression model
+            model = LinearRegression()
+            model.fit(x, y)
 
-        # predict y from the data
-        x_new = np.linspace(0, maximumX, 100)
-        y_new = model.predict(x_new[:, np.newaxis])
+            # predict y from the data
+            x_new = np.linspace(0, maximumX, 100)
+            y_new = model.predict(x_new[:, np.newaxis])
 
-        # plot the results
-        plt.figure(figsize=(8, 6))
-        ax = plt.axes()
-        ax.scatter(x, y)
-        ax.plot(x_new, y_new)
+            # plot the results
+            plt.figure(figsize=(8, 6))
+            ax = plt.axes()
+            ax.scatter(x, y)
+            ax.plot(x_new, y_new)
 
-        ax.set_xlabel('x')
-        ax.set_ylabel('y')
+            ax.set_xlabel('x')
+            ax.set_ylabel('y')
 
-        ax.axis('tight')
-        plt.savefig('static/images/linear_regression.png')
-        return render_template("result.html")
+            ax.axis('tight')
+            plt.savefig('static/images/linear_regression.png')
+
+        else: #Nouveau formulaire
+            print("Je suis dans le nouveau formulaire")
+
+        return render_template("result.html", Option=Option)
 
 
 if __name__ == '__main__':

@@ -14,24 +14,32 @@
                     <!-- ############################# Tabs ############################# -->
                     <ul class="nav nav-pills mb-5 justify-content-center" id="pills-tab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button aria-controls="pills-home" aria-selected="true" class="nav-link active"
-                                    data-target="#pills-home"
-                                    data-toggle="pill" id="pills-home-tab" role="tab" type="button">Ajouter des points
+                            <button aria-selected="true" class="nav-link active"
+                                    data-target="#pills-Points"
+                                    data-toggle="pill" id="pills-Points-tab" role="tab" type="button">Ajouter des points
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button aria-controls="pills-profile" aria-selected="false" class="nav-link"
-                                    data-target="#pills-profile"
-                                    data-toggle="pill" id="pills-profile-tab" role="tab" type="button">Upload un .csv
+                            <button aria-selected="false" class="nav-link"
+                                    data-target="#pills-Csv"
+                                    data-toggle="pill" id="pills-Csv-tab" role="tab" type="button">Upload un .csv
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button aria-selected="false" class="nav-link"
+                                    data-target="#pills-Form3"
+                                    data-toggle="pill" id="pills-Form3-tab" role="tab" type="button">Form3
                             </button>
                         </li>
                     </ul>
                     <div class="tab-content" id="pills-tabContent">
-                        <div aria-labelledby="pills-home-tab" class="tab-pane fade show active" id="pills-home"
+
+                        <!-- ############################# Points ############################# -->
+                        <div aria-labelledby="pills-Points-tab" class="tab-pane fade show active" id="pills-Points"
                              role="tabpanel">
-                            <!-- ############################# Points ############################# -->
                             <form action="{{ url_for('result') }}" enctype="multipart/form-data" method="POST">
                                 <div class="form-group" id="formPoints">
+                                    <input name="Option" type="hidden" value="2">
                                     <div class="row justify-content-center" id="Point1">
                                         <div class="col-md-2 my-2">
                                             <p>Point 1 : </p>
@@ -66,11 +74,13 @@
                                 </div>
                             </form>
                         </div>
-                        <div aria-labelledby="pills-profile-tab" class="tab-pane fade" id="pills-profile"
+
+                        <!-- ############################# CSV ############################# -->
+                        <div aria-labelledby="pills-Csv-tab" class="tab-pane fade" id="pills-Csv"
                              role="tabpanel">
-                            <!-- ############################# CSV ############################# -->
                             <form action="{{ url_for('result') }}" enctype="multipart/form-data" method="POST">
                                 <div class="form-group" id="formCsv">
+                                    <input name="Option" type="hidden" value="1">
                                     <div class="row">
                                         <div class="col-md-4"></div>
                                         <div class="col-md-4">
@@ -93,6 +103,71 @@
                                 </div>
                             </form>
                         </div>
+
+                        <!-- ############################# Form3 ############################# -->
+                        <div aria-labelledby="pills-Form3-tab-tab" class="tab-pane fade" id="pills-Form3"
+                             role="tabpanel">
+                            <form action="{{ url_for('result') }}" enctype="multipart/form-data" method="POST">
+                                <div class="form-group" id="form3">
+                                    <input name="Option" type="hidden" value="3">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-2 my-2">
+                                            <p>Paramètre 1 : </p>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <input class="form-control" name="Param1" placeholder="0" required
+                                                   step=0.001
+                                                   type="number">
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-2 my-2">
+                                            <p>Paramètre 2 : </p>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <input class="form-control" name="Param2" placeholder="0" required
+                                                   step=0.001
+                                                   type="number">
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-2 my-2">
+                                            <p>Paramètre 3 : </p>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <input class="form-control" name="Param3" placeholder="0" required
+                                                   step=0.001
+                                                   type="number">
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-2 my-2">
+                                            <p>Paramètre 4 : </p>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <input class="form-control" name="Param4" placeholder="0" required
+                                                   step=0.001
+                                                   type="number">
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-2 my-2">
+                                            <p>Paramètre 5 : </p>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <input class="form-control" name="Param5" placeholder="0" required
+                                                   step=0.001
+                                                   type="number">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row text-center">
+                                    <div class="col-md-12">
+                                        <button class="btn btn-secondary" type="submit">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 <div class="card-footer text-muted">
@@ -106,6 +181,7 @@
 
 <script>
     var id = 1;
+
     function addPoint() {
         id++;
         var newInput = `<div class="row justify-content-center" id="Point${id}">
