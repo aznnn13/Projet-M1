@@ -6,16 +6,19 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from sklearn.linear_model import LinearRegression
 from werkzeug.utils import secure_filename
 
-# cmd = set FLASK_APP=ProjetM1
+# set FLASK_APP=ProjetM1
 # set FLASK_ENV=development
 # flask run
 
+
+# App config
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
-app.config['UPLOAD_EXTENSIONS'] = ['.csv']
 ALLOWED_EXTENSIONS = {'csv'}
 app.config['UPLOAD_FOLDER'] = 'static/csv'
 app.secret_key = 'super secret key'
+
+
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -110,9 +113,12 @@ def result():
             plt.savefig('static/images/linear_regression.png')
 
         else: #Nouveau formulaire
-            if request.method == 'POST':
-               maxValue = max(data.values())
-               return render_template("result.html", Option=Option,maxValue=maxValue)
+
+            #Convertion des valeurs du dict en float
+            data = dict((k, float(v)) for k, v in data.items())
+
+            maxValue = max(data.values())
+            return render_template("result.html", Option=Option,maxValue=maxValue)
 
         return render_template("result.html", Option=Option)
 
