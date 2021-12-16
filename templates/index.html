@@ -15,16 +15,10 @@
                     <ul class="nav nav-pills mb-5 justify-content-center" id="pills-tab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button aria-selected="true" class="nav-link active"
-                                    data-target="#pills-Points"
-                                    data-toggle="pill" id="pills-Points-tab" role="tab" type="button">Ajouter des points
+                                    data-target="#pills-Regression"
+                                    data-toggle="pill" id="pills-Regression-tab" role="tab" type="button">Régression
+                                linéaire
                             </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button aria-selected="false" class="nav-link"
-                                    data-target="#pills-Csv"
-                                    data-toggle="pill" id="pills-Csv-tab" role="tab" type="button">Upload un .csv
-                            </button>
-                        </li>
                         <li class="nav-item" role="presentation">
                             <button aria-selected="false" class="nav-link"
                                     data-target="#pills-Form3"
@@ -32,80 +26,115 @@
                             </button>
                         </li>
                     </ul>
+
+
                     <div class="tab-content" id="pills-tabContent">
-
-                        <!-- ############################# Points ############################# -->
-                        <div aria-labelledby="pills-Points-tab" class="tab-pane fade show active" id="pills-Points"
+                        <!-- ############################## Régression ##################### -->
+                        <div aria-labelledby="pills-Form3-tab-tab" class="tab-pane fade show active"
+                             id="pills-Regression"
                              role="tabpanel">
-                            <form action="{{ url_for('result') }}" enctype="multipart/form-data" method="POST">
-                                <div class="form-group" id="formPoints">
-                                    <input name="Option" type="hidden" value="2">
-                                    <div class="row justify-content-center" id="Point1">
-                                        <div class="col-md-2 my-2">
-                                            <p>Point 1 : </p>
+                            <!-- ############################# Régression Tabs ############################# -->
+                            <ul class="nav nav-pills mb-5 justify-content-center" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button aria-selected="true" class="nav-link active"
+                                            data-target="#pills-Points"
+                                            data-toggle="pill" id="pills-Points-tab" role="tab" type="button">Ajouter
+                                        des points
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button aria-selected="false" class="nav-link"
+                                            data-target="#pills-Csv"
+                                            data-toggle="pill" id="pills-Csv-tab" role="tab" type="button">Upload un
+                                        .csv
+                                    </button>
+                                </li>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content">
+
+                                <!-- ############################# Points ############################# -->
+                                <div aria-labelledby="pills-Points-tab" class="tab-pane fade show active"
+                                     id="pills-Points"
+                                     role="tabpanel">
+                                    <form action="{{ url_for('result') }}" enctype="multipart/form-data" method="POST">
+                                        <div class="form-group" id="formPoints">
+                                            <input name="Option" type="hidden" value="2">
+                                            <div class="row justify-content-center" id="Point1">
+                                                <div class="col-md-2 my-2">
+                                                    <p>Point 1 : </p>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <input class="form-control" name="PointX1" placeholder="X" required
+                                                           step=0.001
+                                                           type="number">
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <input class="form-control" name="PointY1" placeholder="Y" required
+                                                           step=0.001
+                                                           type="number">
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-md-5">
-                                            <input class="form-control" name="PointX1" placeholder="X" required
-                                                   step=0.001
-                                                   type="number">
+                                        <div class="row text-center">
+                                            <div class="col-md-4">
+                                                <button class="btn btn-info" onclick="addPoint()" type="button">Ajouter
+                                                    un
+                                                    nouveau point
+                                                </button>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-danger" onclick="removePoint()" type="button">
+                                                    Supprimer
+                                                    le
+                                                    dernier point
+                                                </button>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-secondary" type="submit">Submit</button>
+                                            </div>
                                         </div>
-                                        <div class="col-md-5">
-                                            <input class="form-control" name="PointY1" placeholder="Y" required
-                                                   step=0.001
-                                                   type="number">
-                                        </div>
-                                    </div>
+                                    </form>
                                 </div>
-                                <div class="row text-center">
-                                    <div class="col-md-4">
-                                        <button class="btn btn-info" onclick="addPoint()" type="button">Ajouter un
-                                            nouveau point
-                                        </button>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <button class="btn btn-danger" onclick="removePoint()" type="button">Supprimer
-                                            le
-                                            dernier point
-                                        </button>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <button class="btn btn-secondary" type="submit">Submit</button>
-                                    </div>
+
+                                <!-- ############################# CSV ############################# -->
+                                <div aria-labelledby="pills-Csv-tab" class="tab-pane fade" id="pills-Csv"
+                                     role="tabpanel">
+                                    <form action="{{ url_for('result') }}" enctype="multipart/form-data" method="POST">
+                                        <div class="form-group" id="formCsv">
+                                            <input name="Option" type="hidden" value="1">
+                                            <div class="row">
+                                                <div class="col-md-4"></div>
+                                                <div class="col-md-4">
+                                                    <input accept="text/csv" class="form-control" id="customFile"
+                                                           name="csvPoints"
+                                                           required type="file"/>
+                                                </div>
+                                                <div class="col-md-4"></div>
+
+                                            </div>
+                                            <div class="row text-center my-3">
+                                                <div class="col-md-4">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <button class="btn btn-secondary" type="submit">Submit</button>
+                                                </div>
+                                                <div class="col-md-4">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
-                            </form>
+
+                            </div>
+
+
                         </div>
 
-                        <!-- ############################# CSV ############################# -->
-                        <div aria-labelledby="pills-Csv-tab" class="tab-pane fade" id="pills-Csv"
-                             role="tabpanel">
-                            <form action="{{ url_for('result') }}" enctype="multipart/form-data" method="POST">
-                                <div class="form-group" id="formCsv">
-                                    <input name="Option" type="hidden" value="1">
-                                    <div class="row">
-                                        <div class="col-md-4"></div>
-                                        <div class="col-md-4">
-                                            <input accept="text/csv" class="form-control" id="customFile"
-                                                   name="csvPoints"
-                                                   required type="file"/>
-                                        </div>
-                                        <div class="col-md-4"></div>
-
-                                    </div>
-                                    <div class="row text-center my-3">
-                                        <div class="col-md-4">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <button class="btn btn-secondary" type="submit">Submit</button>
-                                        </div>
-                                        <div class="col-md-4">
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
 
                         <!-- ############################# Form3 ############################# -->
-                        <div aria-labelledby="pills-Form3-tab-tab" class="tab-pane fade" id="pills-Form3"
+                        <div aria-labelledby="pills-Form3-tab" class="tab-pane fade" id="pills-Form3"
                              role="tabpanel">
                             <form action="{{ url_for('result') }}" enctype="multipart/form-data" method="POST">
                                 <div class="form-group" id="form3">
