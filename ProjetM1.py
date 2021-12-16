@@ -110,7 +110,10 @@ def result():
             plt.savefig('static/images/linear_regression.png')
 
         else: #Nouveau formulaire
-            a="fmax à faire"
+            if request.method == 'POST':
+               maxValue = max(data.values())
+               return render_template("result.html", Option=Option,maxValue=maxValue)
+
         return render_template("result.html", Option=Option)
 
 
