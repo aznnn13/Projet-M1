@@ -6,9 +6,14 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from sklearn.linear_model import LinearRegression
 from werkzeug.utils import secure_filename
 
+# Windows
 # set FLASK_APP=ProjetM1
 # set FLASK_ENV=development
 # flask run
+
+# Mac
+# export FLASK_APP=ProjetM1.py
+# export FLASK_ENV=development
 
 
 # App config
