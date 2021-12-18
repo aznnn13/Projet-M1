@@ -1,8 +1,10 @@
-import numpy as np
-import matplotlib.pyplot as plt
 import os
+
+import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 from flask import Flask, render_template, request, redirect, url_for, flash
+from flaskext.mysql import MySQL
 from sklearn.linear_model import LinearRegression
 from werkzeug.utils import secure_filename
 
@@ -22,6 +24,15 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 ALLOWED_EXTENSIONS = {'csv'}
 app.config['UPLOAD_FOLDER'] = 'static/csv'
 app.secret_key = 'super secret key'
+
+# DB config
+mysql = MySQL()
+if app.config['ENV'] == 'production':
+    app.config.from_object('config.ProductionConfig')
+else:
+    app.config.from_object('config.DevelopmentConfig')
+mysql.init_app(app)
+mysql = MySQL(app)
 
 
 def allowed_file(filename):
@@ -120,10 +131,29 @@ def result():
 
         else:  # Nouveau formulaire
 
+            saveData = data.pop('saveData', None)
+
             # Convertion des valeurs du dict en float
             data = dict((k, float(v)) for k, v in data.items())
 
+            if saveData == "on":
+                # Champs de la table user
+                Param1 = str(data.get('Param1', 0))
+                Param2 = str(data.get('Param2', 0))
+                Param3 = str(data.get('Param3', 0))
+                Param4 = str(data.get('Param4', 0))
+                Param5 = str(data.get('Param5', 0))
+
+                # Requete
+                conn = mysql.connect()
+                cursor = conn.cursor()
+                cursor.execute(
+                    "INSERT INTO `user` (`id`, `Param1`, `Param2`, `Param3`, `Param4`, `Param5`) VALUES (NULL, " + Param1 + "," + Param2 + "," + Param3 + ", " + Param4 + ", " + Param5 + ")")
+                conn.commit()
+                cursor.close()
+
             maxValue = max(data.values())
+
             return render_template("result.html", Option=Option, maxValue=maxValue)
 
         return render_template("result.html", Option=Option)
