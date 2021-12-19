@@ -8,7 +8,10 @@
             <div class="mx-auto">
                 <a class="navbar-brand" href="/">PROJET</a>
             </div>
-            {% if session['isAdmin'] %}
+            {% if 'isAdmin' in session %}
+            <div>
+                <a class="btn btn-primary" href="{{ url_for('adminDashboard') }}" role="button" style="margin-right: 1rem;">Dashboard</a>
+            </div>
             <div>
                 <a class="btn btn-danger" href="{{ url_for('deconnexion') }}" role="button">Se déconnecter</a>
             </div>

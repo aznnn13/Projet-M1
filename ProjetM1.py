@@ -168,16 +168,21 @@ def result():
 
 @app.route('/admin/dashboard', methods=['GET', 'POST'])
 def adminDashboard():
-    data = request.form
-    usernameInput = data.get('Username')
-    passwordInput = data.get('Password')
-
-    if passwordInput == adminPassword and usernameInput == adminUsername:
-        session["isAdmin"] = 1
+    #Si on est déjà connecté
+    if 'isAdmin' in session:
         return render_template("admin/dashboard.html")
     else:
-        flash('Erreur: Mot de passe incorrect', 'danger')
-        return redirect(url_for('index'))
+        data = request.form
+        usernameInput = data.get('Username')
+        passwordInput = data.get('Password')
+
+        if passwordInput == adminPassword and usernameInput == adminUsername:
+            session["isAdmin"] = 1
+            return render_template("admin/dashboard.html")
+        else:
+            flash('Erreur: Mot de passe incorrect', 'danger')
+            return redirect(url_for('index'))
+
 
 
 @app.route('/admin/deconnexion')
