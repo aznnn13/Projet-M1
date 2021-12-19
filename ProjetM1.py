@@ -1,9 +1,9 @@
 import os
-
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask_session import Session
 from flaskext.mysql import MySQL
 from sklearn.linear_model import LinearRegression
 from werkzeug.utils import secure_filename
@@ -24,6 +24,9 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 ALLOWED_EXTENSIONS = {'csv'}
 app.config['UPLOAD_FOLDER'] = 'static/csv'
 app.secret_key = 'super secret key'
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 # DB config
 mysql = MySQL()
@@ -34,6 +37,9 @@ else:
 mysql.init_app(app)
 mysql = MySQL(app)
 
+# Admin session config
+adminUsername = "admin"
+adminPassword = "projetm1"
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -158,6 +164,27 @@ def result():
             return render_template("result.html", Option=Option, maxValue=maxValue)
 
         return render_template("result.html", Option=Option)
+
+
+@app.route('/admin/dashboard', methods=['GET', 'POST'])
+def adminDashboard():
+    data = request.form
+    usernameInput = data.get('Username')
+    passwordInput = data.get('Password')
+
+    if passwordInput == adminPassword and usernameInput == adminUsername:
+        session["isAdmin"] = 1
+        return render_template("admin/dashboard.html")
+    else:
+        flash('Erreur: Mot de passe incorrect', 'danger')
+        return redirect(url_for('index'))
+
+
+@app.route('/admin/deconnexion')
+def deconnexion():
+    session.pop('isAdmin')
+    return redirect(url_for('index'))
+
 
 
 if __name__ == '__main__':
