@@ -148,7 +148,8 @@ def result():
                 conn = mysql.connect()
                 cursor = conn.cursor()
                 cursor.execute(
-                    "INSERT INTO `user` (`id`, `Param1`, `Param2`, `Param3`, `Param4`, `Param5`) VALUES (NULL, " + Param1 + "," + Param2 + "," + Param3 + ", " + Param4 + ", " + Param5 + ")")
+                    "INSERT INTO `user` (`id`, `Param1`, `Param2`, `Param3`, `Param4`, `Param5`) "
+                    "VALUES (NULL, " + Param1 + "," + Param2 + "," + Param3 + ", " + Param4 + ", " + Param5 + ")")
                 conn.commit()
                 cursor.close()
 
