@@ -190,6 +190,10 @@ def deconnexion():
     session.pop('isAdmin')
     return redirect(url_for('index'))
 
+@app.route('/admin/export')
+def adminExport():
+    return render_template("admin/export.html")
+
 
 
 if __name__ == '__main__':

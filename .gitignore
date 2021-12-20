@@ -542,6 +542,9 @@ static/csv/*
 static/images/*
 !static/images/.gitkeep 
 
+#Flask_session
+flask_session/*
+
 # General
 .DS_Store
 .AppleDouble
