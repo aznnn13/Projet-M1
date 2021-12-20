@@ -1,12 +1,15 @@
+import csv
 import os
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from flask import Flask, render_template, request, redirect, url_for, flash, session
-from flask_session import Session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, send_file
 from flaskext.mysql import MySQL
 from sklearn.linear_model import LinearRegression
 from werkzeug.utils import secure_filename
+
+from flask_session import Session
 
 # Windows
 # set FLASK_APP=ProjetM1
@@ -40,6 +43,7 @@ mysql = MySQL(app)
 # Admin session config
 adminUsername = "admin"
 adminPassword = "projetm1"
+
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -168,7 +172,7 @@ def result():
 
 @app.route('/admin/dashboard', methods=['GET', 'POST'])
 def adminDashboard():
-    #Si on est déjà connecté
+    # Si on est déjà connecté
     if 'isAdmin' in session:
         return render_template("admin/dashboard.html")
     else:
@@ -184,16 +188,31 @@ def adminDashboard():
             return redirect(url_for('index'))
 
 
-
 @app.route('/admin/deconnexion')
 def deconnexion():
     session.pop('isAdmin')
     return redirect(url_for('index'))
 
+
 @app.route('/admin/export')
 def adminExport():
     return render_template("admin/export.html")
 
+
+@app.route('/export_bdd')
+def export_bdd():
+    # Suppression de l'ancien export
+    if os.path.exists("static/csv/export.csv"):
+        os.remove("static/csv/export.csv")
+
+    # Requete
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    clients = pd.read_sql('SELECT * FROM user', conn)
+    clients.to_csv('static/csv/export.csv', index=False)
+
+    path = "static/csv/export.csv"
+    return send_file(path, as_attachment=True)
 
 
 if __name__ == '__main__':
