@@ -208,8 +208,8 @@ def export_bdd():
     # Requete
     conn = mysql.connect()
     cursor = conn.cursor()
-    clients = pd.read_sql('SELECT * FROM user', conn)
-    clients.to_csv('static/csv/export.csv', index=False)
+    user = pd.read_sql('SELECT * FROM user', conn)
+    user.to_csv('static/csv/export.csv', index=False)
 
     path = "static/csv/export.csv"
     return send_file(path, as_attachment=True)
