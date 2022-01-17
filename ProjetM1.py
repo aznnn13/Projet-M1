@@ -1,6 +1,7 @@
 import csv
 import os
 
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -30,6 +31,10 @@ app.secret_key = 'super secret key'
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+
+# Matplotlib cfg
+matplotlib.use('agg')
+matplotlib.pyplot.switch_backend('Agg')
 
 # DB config
 mysql = MySQL()
@@ -126,6 +131,7 @@ def result():
             # predict y from the data
             x_new = np.linspace(0, maximumX, 100)
             y_new = model.predict(x_new[:, np.newaxis])
+
 
             # plot the results
             plt.figure(figsize=(8, 6))
