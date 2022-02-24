@@ -235,8 +235,8 @@ def apiRegression():
         for v in json_dictionary['y']:
             y.append(v)
 
-        print(x)
-        print(y)
+        print("Liste X :" + str(x))
+        print("Liste Y :" + str(y))
         return "ok"
 
 
