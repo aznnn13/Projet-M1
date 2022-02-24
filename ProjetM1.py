@@ -1,4 +1,4 @@
-import csv
+import json
 import os
 
 import matplotlib
@@ -18,8 +18,7 @@ from flask_session import Session
 # flask run
 
 # Mac
-# export FLASK_APP=ProjetM1.py
-# export FLASK_ENV=development
+# export FLASK_APP=ProjetM1.py && export FLASK_ENV=development && flask run
 
 
 # App config
@@ -66,25 +65,25 @@ def result():
         # Convertion de 'ImmutableMultiDict' en 'dict'
         data = request.form.to_dict()
 
-        # On récupère l'option choisie et on l'enlève au dict
+        # On recupere l'option choisie et on l'enleve au dict
         Option = int(data.pop('Option', None))
 
         if Option <= 2:
 
-            # Suppression des anciens résultats
+            # Suppression des anciens resultats
             if os.path.exists("static/csv/csvPoints.csv"):
                 os.remove("static/csv/csvPoints.csv")
             if os.path.exists("static/images/linear_regression.png"):
                 os.remove("static/images/linear_regression.png")
 
-            # Déclaration des tableaux X et Y pour la régression linéaire
+            # Declaration des tableaux X et Y pour la regression lineaire
             x = []
             y = []
             maximumX = 0
 
             if Option == 1:  # Import .csv
 
-                # Sauvegarde du csv avec un nom statique + vérification de l'extension
+                # Sauvegarde du csv avec un nom statique + verification de l'extension
                 f = request.files['csvPoints']
                 if f and allowed_file(f.filename):
                     f.save(os.path.join(app.config['UPLOAD_FOLDER'],
@@ -106,7 +105,7 @@ def result():
                         for value in colval.values:
                             y.append([value])
 
-            if Option == 2:  # Ajout des points à la main
+            if Option == 2:  # Ajout des points a la main
 
                 # check if the post request has the file part
                 i = 0
@@ -131,7 +130,6 @@ def result():
             # predict y from the data
             x_new = np.linspace(0, maximumX, 100)
             y_new = model.predict(x_new[:, np.newaxis])
-
 
             # plot the results
             plt.figure(figsize=(8, 6))
@@ -178,7 +176,7 @@ def result():
 
 @app.route('/admin/dashboard', methods=['GET', 'POST'])
 def adminDashboard():
-    # Si on est déjà connecté
+    # Si on est deja connecte
     if 'isAdmin' in session:
         return render_template("admin/dashboard.html")
     else:
@@ -219,6 +217,27 @@ def export_bdd():
 
     path = "static/csv/export.csv"
     return send_file(path, as_attachment=True)
+
+
+# ------------------- API ------------------------
+
+@app.route('/apiRegression', methods=['POST'])
+def apiRegression():
+    if request.method == 'POST':
+        jsonPoints = request.data
+        json_dictionary = json.loads(jsonPoints)
+        x = []
+        y = []
+
+        for v in json_dictionary['x']:
+            x.append(v)
+
+        for v in json_dictionary['y']:
+            y.append(v)
+
+        print(x)
+        print(y)
+        return "ok"
 
 
 if __name__ == '__main__':
