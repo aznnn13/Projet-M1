@@ -224,20 +224,52 @@ def export_bdd():
 @app.route('/apiRegression', methods=['POST'])
 def apiRegression():
     if request.method == 'POST':
+
+        # Suppression des anciens résultats
+        if os.path.exists("static/images/linear_regression.png"):
+            os.remove("static/images/linear_regression.png")
+
         jsonPoints = request.data
         json_dictionary = json.loads(jsonPoints)
         x = []
         y = []
+        maximumX = 0
 
         for v in json_dictionary['x']:
-            x.append(v)
+            x.append([v])
+            if float(v) > maximumX:
+                maximumX = float(v)
 
         for v in json_dictionary['y']:
-            y.append(v)
+            y.append([v])
 
         print("Liste X :" + str(x))
         print("Liste Y :" + str(y))
-        return "ok"
+
+        # Construction des listes X et Y
+        x = np.array(x, dtype=float)
+        y = np.array(y, dtype=float)
+
+        # create a linear regression model
+        model = LinearRegression()
+        model.fit(x, y)
+
+        # predict y from the data
+        x_new = np.linspace(0, maximumX, 100)
+        y_new = model.predict(x_new[:, np.newaxis])
+
+        # plot the results
+        plt.figure(figsize=(8, 6))
+        ax = plt.axes()
+        ax.scatter(x, y)
+        ax.plot(x_new, y_new)
+
+        ax.set_xlabel('x')
+        ax.set_ylabel('y')
+
+        ax.axis('tight')
+        plt.savefig('static/images/linear_regression.png')
+        return send_file("static/images/linear_regression.png", mimetype='image/gif') #TODO: voir autre méthode avec sanity check
 
 
 if __name__ == '__main__':
