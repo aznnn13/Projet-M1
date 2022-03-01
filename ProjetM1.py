@@ -221,7 +221,7 @@ def export_bdd():
 
 # ------------------- API ------------------------
 
-@app.route('/apiRegression', methods=['GET', 'POST'])
+@app.route('/apiRegression', methods=['POST'])
 def apiRegression():
     if request.method == 'POST':
 
