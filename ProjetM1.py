@@ -5,7 +5,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from flask import Flask, render_template, request, redirect, url_for, flash, session, send_file
+from flask import Flask, render_template, request, redirect, url_for, flash, session, send_file, send_from_directory
 from flaskext.mysql import MySQL
 from sklearn.linear_model import LinearRegression
 from werkzeug.utils import secure_filename
@@ -22,7 +22,7 @@ from flask_session import Session
 
 
 # App config
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 ALLOWED_EXTENSIONS = {'csv'}
 app.config['UPLOAD_FOLDER'] = 'static/csv'
@@ -221,7 +221,7 @@ def export_bdd():
 
 # ------------------- API ------------------------
 
-@app.route('/apiRegression', methods=['POST'])
+@app.route('/apiRegression', methods=['GET', 'POST'])
 def apiRegression():
     if request.method == 'POST':
 
@@ -269,7 +269,8 @@ def apiRegression():
 
         ax.axis('tight')
         plt.savefig('static/images/linear_regression.png')
-        return send_file("static/images/linear_regression.png", mimetype='image/gif') #TODO: voir autre méthode avec sanity check
+        # return send_from_directory('static/images', 'linear_regression.png')
+        return "Ok"
 
 
 if __name__ == '__main__':
