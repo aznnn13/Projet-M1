@@ -5,7 +5,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from flask import Flask, render_template, request, redirect, url_for, flash, session, send_file, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, flash, session, send_file
 from flaskext.mysql import MySQL
 from sklearn.linear_model import LinearRegression
 from werkzeug.utils import secure_filename
@@ -224,7 +224,6 @@ def export_bdd():
 @app.route('/apiRegression', methods=['POST'])
 def apiRegression():
     if request.method == 'POST':
-
         # Suppression des anciens résultats
         if os.path.exists("static/images/linear_regression.png"):
             os.remove("static/images/linear_regression.png")
@@ -271,6 +270,28 @@ def apiRegression():
         plt.savefig('static/images/linear_regression.png')
         # return send_from_directory('static/images', 'linear_regression.png')
         return "Ok"
+
+
+@app.route('/apiFormulaire', methods=['POST'])
+def apiFormulaire():
+    jsonFormulaire = request.data
+    json_dictionary = json.loads(jsonFormulaire)
+
+    listParameters = list((float(v)) for v in json_dictionary['parameters'])
+
+    if json_dictionary['saveData'] == "true":
+        # Requete
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO `user` (`id`, `Param1`, `Param2`, `Param3`, `Param4`, `Param5`) "
+            "VALUES (NULL, " + str(listParameters[0]) + "," + str(listParameters[1]) + "," +
+            str(listParameters[2]) + ", " + str(listParameters[3]) + ", " +
+            str(listParameters[4]) + ")")
+        conn.commit()
+        cursor.close()
+
+    return str(max(listParameters))
 
 
 if __name__ == '__main__':
