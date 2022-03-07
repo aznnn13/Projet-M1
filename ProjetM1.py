@@ -25,7 +25,7 @@ from flask_session import Session
 app = Flask(__name__, static_url_path='/static')
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 ALLOWED_EXTENSIONS = {'csv'}
-app.config['UPLOAD_FOLDER'] = 'static/csv'
+app.config['UPLOAD_FOLDER'] = 'upload/csv'
 app.secret_key = 'super secret key'
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -71,8 +71,8 @@ def result():
         if Option <= 2:
 
             # Suppression des anciens resultats
-            if os.path.exists("static/csv/csvPoints.csv"):
-                os.remove("static/csv/csvPoints.csv")
+            if os.path.exists("upload/csv/csvPoints.csv"):
+                os.remove("upload/csv/csvPoints.csv")
             if os.path.exists("static/images/linear_regression.png"):
                 os.remove("static/images/linear_regression.png")
 
@@ -93,7 +93,7 @@ def result():
                     return redirect(url_for('index'))
 
                 # Read the csv file
-                df = pd.read_csv("static/csv/csvPoints.csv", sep=',')[['X', 'Y']]
+                df = pd.read_csv("upload/csv/csvPoints.csv", sep=',')[['X', 'Y']]
                 for (colname, colval) in df.iteritems():
                     if colname == 'X':
                         for value in colval.values:
@@ -206,16 +206,16 @@ def adminExport():
 @app.route('/export_bdd')
 def export_bdd():
     # Suppression de l'ancien export
-    if os.path.exists("static/csv/export.csv"):
-        os.remove("static/csv/export.csv")
+    if os.path.exists("upload/csv/export.csv"):
+        os.remove("upload/csv/export.csv")
 
     # Requete
     conn = mysql.connect()
     cursor = conn.cursor()
     user = pd.read_sql('SELECT * FROM user', conn)
-    user.to_csv('static/csv/export.csv', index=False)
+    user.to_csv('upload/csv/export.csv', index=False)
 
-    path = "static/csv/export.csv"
+    path = "upload/csv/export.csv"
     return send_file(path, as_attachment=True)
 
 
