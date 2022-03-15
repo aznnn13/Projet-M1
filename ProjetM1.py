@@ -1,5 +1,6 @@
 import json
 import os
+import pickle
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -7,6 +8,7 @@ import numpy as np
 import pandas as pd
 from flask import Flask, render_template, request, redirect, url_for, flash, session, send_file
 from flaskext.mysql import MySQL
+from sklearn import preprocessing
 from sklearn.linear_model import LinearRegression
 from werkzeug.utils import secure_filename
 
@@ -25,7 +27,6 @@ from flask_session import Session
 app = Flask(__name__, static_url_path='/static')
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 ALLOWED_EXTENSIONS = {'csv'}
-app.config['UPLOAD_FOLDER'] = 'upload/csv'
 app.secret_key = 'super secret key'
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -273,7 +274,7 @@ def apiRegression():
 
 
 @app.route('/apiFormulaire', methods=['POST'])
-def apiFormulaire():
+def apiFormulaire(scaler=None):
     jsonFormulaire = request.data
     json_dictionary = json.loads(jsonFormulaire)
 
@@ -291,7 +292,27 @@ def apiFormulaire():
         conn.commit()
         cursor.close()
 
-    return str(max(listParameters))
+    # load the model from disk
+    filename = 'model/recidive_model.sav'
+    loaded_model = pickle.load(open(filename, 'rb'))
+
+    predictionDict = [listParameters[0], listParameters[1], listParameters[2], listParameters[3], listParameters[4]]
+
+    # changing input data to a numpy array
+    input_data_as_numpy_array = np.asarray(predictionDict)
+
+    # reshape the numpy array
+    input_data_reshaped = input_data_as_numpy_array.reshape(1, -1)
+
+    # standardize the data
+    scaler = preprocessing.StandardScaler()
+    std_data = scaler.fit_transform(input_data_reshaped)
+
+    # Predict the input's class
+    svm_prediction = loaded_model.predict(std_data)
+
+    # Return prediction
+    return str(svm_prediction[0])
 
 
 if __name__ == '__main__':
