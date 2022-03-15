@@ -274,7 +274,7 @@ def apiRegression():
 
 
 @app.route('/apiFormulaire', methods=['POST'])
-def apiFormulaire(scaler=None):
+def apiFormulaire():
     jsonFormulaire = request.data
     json_dictionary = json.loads(jsonFormulaire)
 
@@ -296,10 +296,10 @@ def apiFormulaire(scaler=None):
     filename = 'model/recidive_model.sav'
     loaded_model = pickle.load(open(filename, 'rb'))
 
-    predictionDict = [listParameters[0], listParameters[1], listParameters[2], listParameters[3], listParameters[4]]
+    prediction = [listParameters[0], listParameters[1], listParameters[2], listParameters[3], listParameters[4]]
 
     # changing input data to a numpy array
-    input_data_as_numpy_array = np.asarray(predictionDict)
+    input_data_as_numpy_array = np.asarray(prediction)
 
     # reshape the numpy array
     input_data_reshaped = input_data_as_numpy_array.reshape(1, -1)
