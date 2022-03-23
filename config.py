@@ -9,7 +9,7 @@ class DevelopmentConfig(Config):
     Development configurations
     """
     MYSQL_DATABASE_USER = 'root'
-    MYSQL_DATABASE_PASSWORD = 'YES'
+    MYSQL_DATABASE_PASSWORD = ''
     MYSQL_DATABASE_HOST = 'localhost'
     MYSQL_DATABASE_PORT = 3306
     MYSQL_DATABASE_DB = 'projet'  # can be any
